@@ -1,0 +1,35 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-8">
+      <p-panel header="Text editor">
+        <form [formGroup]="form" class="NgxEditor__Wrapper">
+          <ngx-editor-menu [editor]="this.editor" [toolbar]="toolbar" [customMenuRef]="commentMenu"></ngx-editor-menu>
+          <ngx-editor [editor]="this.editor" formControlName="editorContent" (selectionchange)="editorSelectionChange()" (focusIn)="editorClickin()" (click)="editorClickout($event)" (ngModelChange)="editorChange($event)"></ngx-editor>
+<!--          <ngx-editor-floating-menu [editor]="this.editor" ></ngx-editor-floating-menu>-->
+          <ng-template #commentMenu>
+            <app-comment-editor [editor]="this.editor" (onCommentClick)="onCommentDone($event)"></app-comment-editor>
+          </ng-template>
+        </form>
+      </p-panel>
+      <hr>
+      <p-panel header="Output">
+        <pre>
+           <p>
+            {{this.form.value | json}}
+          </p>
+        </pre>
+      </p-panel>
+    </div>
+    <div class="col-4">
+      <p-scrollPanel [style]="{width: '100%', height: '100%'}" styleClass="custombar1">
+        <p-panel [toggleable]="true" [transitionOptions]="'1ms'">
+          <ng-template pTemplate="header">
+            Comments
+          </ng-template>
+          <app-timeline-comments [comments]="comments"></app-timeline-comments>
+        </p-panel>
+      </p-scrollPanel>
+    </div>
+  </div>
+</div>
+

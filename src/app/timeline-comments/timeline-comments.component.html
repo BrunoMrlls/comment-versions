@@ -1,0 +1,19 @@
+<p-timeline [value]="comments" align="alternate" styleClass="customized-timeline">
+  <ng-template pTemplate="marker" let-comment>
+    <span class="custom-marker p-shadow-2" [style.backgroundColor]="BackgroudColorIcon" [style.color]="colorIcon">
+      <i [ngClass]="icon"></i>
+    </span>
+  </ng-template>
+  <ng-template pTemplate="content" let-comment>
+    <p-card [header]="comment.user" [subheader]="comment.datetimeAsString" [style]="{ width: '300px', height: '-10%', 'margin-bottom': '2em' }" styleClass="shadow-2">
+      <ng-template pTemplate="header">
+      </ng-template>
+        <p>
+          {{comment.message}}
+          ({{comment.from}} ~ {{comment.to}})
+        </p>
+      <ng-template pTemplate="footer">
+      </ng-template>
+    </p-card>
+  </ng-template>
+</p-timeline>
