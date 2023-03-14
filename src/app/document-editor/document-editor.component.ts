@@ -6,6 +6,7 @@ import {ConfirmationService, PrimeNGConfig} from "primeng/api";
 import {TimelineCommentsComponent} from "../timeline-comments/timeline-comments.component";
 import {DatePipe} from "@angular/common";
 import {EditorUtils} from "../utils/EditorUtils";
+import {MaskUtils} from "../utils/MaskUtils";
 
 @Component({
   selector: 'app-document-editor',
@@ -30,30 +31,7 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
     this.primengConfig.ripple = true;
     this.comments = this.getAllComments();
     this.form.get('editorContent')?.setValue(this.getEditorContent())
-
-    // this.editor.view.dom.addEventListener()
-  }
-
-
-  // @HostListener('click', ['$event.target']) onClick(event: any) {
-  //   console.log(event);
-  //   if (this.isCopy) {
-  //     e.innerText = e.innerText + this.myInput
-  //   }
-  // }
-
-  editorClickout(e: any) {
-    // console.log(e)
-  }
-
-
-  editorClickin() {
-    const doc = this.editor.view.state.doc;
-    // console.log(doc)
-  }
-
-  editorSelectionChange() {
-    console.log('selec')
+    //todo here must to register a new plugin, to watch out when text selected
   }
 
   ngOnDestroy(): void {
@@ -81,7 +59,7 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
       comments.map(c => {
         if (c.datetime) {
           c.datetime = Object.assign(new Date(), c.datetime);
-          c.datetimeAsString = <string>new DatePipe("pt-BR").transform(c.datetime, 'dd/MM/yyyy hh:mm:ss');
+          c.datetimeAsString = MaskUtils.dateToHumanString(c.datetime);
         }
       })
       return comments;
@@ -90,6 +68,7 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
   }
 
   editorChange(e: string) {
+    //todo fix here only when confimation modal button will pressed
     this.saveEditorContent(e)
   }
 

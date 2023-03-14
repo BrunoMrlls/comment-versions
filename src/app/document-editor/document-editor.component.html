@@ -4,7 +4,7 @@
       <p-panel header="Text editor">
         <form [formGroup]="form" class="NgxEditor__Wrapper">
           <ngx-editor-menu [editor]="this.editor" [toolbar]="toolbar" [customMenuRef]="commentMenu"></ngx-editor-menu>
-          <ngx-editor [editor]="this.editor" formControlName="editorContent" (selectionchange)="editorSelectionChange()" (focusIn)="editorClickin()" (click)="editorClickout($event)" (ngModelChange)="editorChange($event)"></ngx-editor>
+          <ngx-editor [editor]="this.editor" formControlName="editorContent" (ngModelChange)="editorChange($event)"></ngx-editor>
 <!--          <ngx-editor-floating-menu [editor]="this.editor" ></ngx-editor-floating-menu>-->
           <ng-template #commentMenu>
             <app-comment-editor [editor]="this.editor" (onCommentClick)="onCommentDone($event)"></app-comment-editor>

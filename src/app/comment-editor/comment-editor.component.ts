@@ -6,8 +6,8 @@ import {EditorView} from 'prosemirror-view';
 import {Editor} from 'ngx-editor';
 import {Comment} from "../dto/Comment";
 import {NamesUtils} from "../utils/NamesUtils";
-import {DatePipe} from "@angular/common";
 import {EditorUtils} from "../utils/EditorUtils";
+import {MaskUtils} from "../utils/MaskUtils";
 
 @Component({
   selector: 'app-comment-editor',
@@ -53,13 +53,11 @@ export class CommentEditorComponent implements OnInit {
     // console.log('Content: ', state.doc.textContent)
     // console.log('Selected: ', text)
 
-
-
     const names = NamesUtils.NAMES;
     const user = names[Math.floor(Math.random()*names.length)];
 
     const datetime = new Date();
-    const datetimeAsString = <string>new DatePipe("pt-BR").transform(datetime, 'dd/MM/yyyy hh:mm:ss');
+    const datetimeAsString = MaskUtils.dateToHumanString(datetime);
 
     this.comment = new Comment(user, text, from, to, datetime, datetimeAsString);
 
