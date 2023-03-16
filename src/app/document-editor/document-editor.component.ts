@@ -1,12 +1,13 @@
-import {Component, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import {Editor, toDoc, toHTML, Toolbar, Validators} from 'ngx-editor';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {Editor, Toolbar} from 'ngx-editor';
 import {Comment} from "../dto/Comment";
-import {ConfirmationService, PrimeNGConfig} from "primeng/api";
-import {TimelineCommentsComponent} from "../timeline-comments/timeline-comments.component";
-import {DatePipe} from "@angular/common";
+import {PrimeNGConfig} from "primeng/api";
 import {EditorUtils} from "../utils/EditorUtils";
-import {MaskUtils} from "../utils/MaskUtils";
+import {Plugin, PluginKey, TextSelection} from "prosemirror-state";
+import {EditorView} from "prosemirror-view";
+import {CommentsServiceService} from "../service/comments-service.service";
+import {EditorServiceService} from "../service/editor-service.service";
 
 @Component({
   selector: 'app-document-editor',
@@ -19,19 +20,50 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
     editorContent: new FormControl('')
   });
   toolbar : Toolbar = EditorUtils.TOOLBAR_ACTIONS;
+  contextCustomToolbar : Toolbar = EditorUtils.CONTEXT_TOOLBAR_ACTIONS;
+
+  iconCommentMenuClass = EditorUtils.ICON_COMMENT_CLASS;
   comments: Comment[] = [];
+  selectedComment: Comment = {from: 0, message: ''}
 
   constructor(
     private primengConfig: PrimeNGConfig
+    , private commentService: CommentsServiceService
+    , private editorService: EditorServiceService
+
   ) {
     this.editor = new Editor();
+    const plugin = new Plugin({
+      key: new PluginKey(`custom-menu-comment`),
+      view: () => {
+        return {
+          update: this.editorTextStateUpdated,
+        };
+      },
+    });
+    this.editor.registerPlugin(plugin);
   }
 
+  editorTextStateUpdated = (view: EditorView) => {
+    const { state, dispatch } = view;
+    const from = state.selection.from;
+    this.comments = this.commentService.findCommentByIndex(from);
+    const comment = this.comments[0];
+    if (comment) {
+      this.selectedComment = comment;
+      if (comment.from && comment.to) {
+        // if (dispatch) {
+          // const tr = state.tr.setSelection(TextSelection.create(state.doc, comment.from, comment.to)).scrollIntoView();
+          // dispatch(tr);
+        // }
+        // todo find something to mark thats text, to show thats was commented, beyond selection ?
+        //disable comment button, user can comment using right panel.
+      }
+    }
+  }
   ngOnInit(): void {
     this.primengConfig.ripple = true;
-    this.comments = this.getAllComments();
-    this.form.get('editorContent')?.setValue(this.getEditorContent())
-    //todo here must to register a new plugin, to watch out when text selected
+    this.form.get('editorContent')?.setValue(this.editorService.getEditorContent())
   }
 
   ngOnDestroy(): void {
@@ -39,51 +71,16 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
   }
 
   onCommentDone(c: Comment) {
-    this.addComment(c)
-  }
-
-  addComment(comment: Comment) {
-    const comments = this.getAllComments();
-    if (comments) {
-      localStorage.removeItem('comments')
-      this.comments = comments;
-    }
-    this.comments = [... this.comments, comment];
-    localStorage.setItem('comments', JSON.stringify(this.comments));
-  }
-
-  getAllComments() : Comment[] {
-    const commentsJson = localStorage.getItem('comments');
-    if (commentsJson) {
-      const comments = JSON.parse(commentsJson) as Comment[];
-      comments.map(c => {
-        if (c.datetime) {
-          c.datetime = Object.assign(new Date(), c.datetime);
-          c.datetimeAsString = MaskUtils.dateToHumanString(c.datetime);
-        }
-      })
-      return comments;
-    }
-    return []
+    //todo before save, verify if is there something already indexed ?
+    //because can there be comments above or below of each other.
+    this.commentService.addComment(c)
+    const index = this.selectedComment.from ? this.selectedComment.from : 0;
+    // this.comments = this.commentService.findCommentByIndex(index);
+    this.comments = [... this.comments, c];
   }
 
   editorChange(e: string) {
-    //todo fix here only when confimation modal button will pressed
-    this.saveEditorContent(e)
+    this.editorService.saveEditorContent(e);
   }
-
-  getEditorContent() : string {
-    const editorContentJson = localStorage.getItem('editorContent');
-    if (editorContentJson) {
-      return toHTML(JSON.parse(editorContentJson));
-    }
-    return 'Mussum Ipsum, cacilds vidis litro abertis. Copo furadis é disculpa de bebadis, arcu quam euismod magna.Diuretics paradis num copo é motivis de denguis.Mais vale um bebadis conhecidiss, que um alcoolatra anonimis.Em pé sem cair, deitado sem dormir, sentado sem cochilar e fazendo pose.';
-  }
-
-  saveEditorContent(html: string) {
-    localStorage.removeItem('editorContent')
-    localStorage.setItem('editorContent', JSON.stringify(toDoc(html)))
-  }
-
 
 }

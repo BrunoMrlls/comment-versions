@@ -14,4 +14,14 @@ export class EditorUtils {
     ['text_color', 'background_color'],
     ['align_left', 'align_center', 'align_right', 'align_justify'],
   ];
+  static CONTEXT_TOOLBAR_ACTIONS : Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['link', 'image'],
+  ];
+  static ICON_COMMENT_CLASS = [
+    'NgxEditor__MenuItem'
+    , 'NgxEditor__MenuItem--Icon'
+    , 'NgxEditor__Seperator'
+  ];
 }

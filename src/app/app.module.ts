@@ -10,7 +10,6 @@ import {PanelModule} from 'primeng/panel';
 import {NgxEditorModule} from 'ngx-editor';
 import {CommonModule, registerLocaleData} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommentEditorComponent} from './comment-editor/comment-editor.component';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import {InplaceModule} from "primeng/inplace";
@@ -21,6 +20,8 @@ import { TimelineCommentsComponent } from './timeline-comments/timeline-comments
 import {TimelineModule} from "primeng/timeline";
 import {CardModule} from "primeng/card";
 import localept from '@angular/common/locales/pt';
+import { CommentPopupComponent } from './comment-popup/comment-popup.component';
+import { SanitizeHtmlPipe } from './pipes/sanitize/sanitize-html.pipe';
 
 registerLocaleData(localept, 'pt');
 
@@ -28,8 +29,9 @@ registerLocaleData(localept, 'pt');
   declarations: [
     AppComponent,
     DocumentEditorComponent,
-    CommentEditorComponent,
     TimelineCommentsComponent,
+    CommentPopupComponent,
+    SanitizeHtmlPipe,
   ],
   imports: [
     CommonModule,

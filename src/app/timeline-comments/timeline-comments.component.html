@@ -5,12 +5,12 @@
     </span>
   </ng-template>
   <ng-template pTemplate="content" let-comment>
-    <p-card [header]="comment.user" [subheader]="comment.datetimeAsString" [style]="{ width: '300px', height: '-10%', 'margin-bottom': '2em' }" styleClass="shadow-2">
+    <p-card [header]="comment.user" [subheader]="comment.datetimeAsString" [style]="{ width: '300px', height: '-10%', 'margin-bottom': '2em' }" styleClass="shadow-2" >
       <ng-template pTemplate="header">
       </ng-template>
         <p>
           {{comment.message}}
-          ({{comment.from}} ~ {{comment.to}})
+<!--          ({{comment.from}} ~ {{comment.to}})-->
         </p>
       <ng-template pTemplate="footer">
       </ng-template>
