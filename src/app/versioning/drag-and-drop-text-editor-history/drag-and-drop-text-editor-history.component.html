@@ -1,0 +1,56 @@
+<p-panel [toggleable]="true" [transitionOptions]="'1ms'" [collapsed]="showDiffPanel">
+  <ng-template pTemplate="header">
+    Drag and Drop to Table
+  </ng-template>
+  <div class="grid">
+    <div class="col-12 md:col-6 drag-column">
+      <div *ngFor="let content of availableContents; let i = index">
+        <div class="product-item" pDraggable="contents" (onDragStart)="dragStart($event, content)" (onDragEnd)="dragEnd($event)">
+          <div class="product-list-detail">
+            <h5 class="mb-2">{{content.user}}</h5>
+            <i class="pi pi-tag product-category-icon"></i>
+            <span class="product-category">{{content.date | date: 'dd/MM/yyyy HH:mm:ss' }}</span>
+          </div>
+          <div class="product-list-action">
+            <h6 class="mb-2">v{{content.version}}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 md:col-6 drop-column" pDroppable="contents" (onDrop)="drop($event)">
+      <p-table [value]="selectedContents">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Version</th>
+            <th>User</th>
+            <th>Date time</th>
+            <th>Content</th>
+            <th>Remove</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-content>
+          <tr>
+            <td>{{content.version}}</td>
+            <td>{{content.user}}</td>
+            <td>{{content.date | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+            <td>{{content.rawContent ? content.rawContent.substring(0, Math.min(content.rawContent.length, 10)) : ''}}</td>
+            <td>
+              <button (click)="removeSelectedItem(content)" pButton pRipple type="button" icon="pi pi-times" class="p-button-rounded p-button-danger p-button-outlined"></button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  <p-divider></p-divider>
+  <div class="card-body text-right mt-3">
+    <p-button type="button" label="Diff" ariaLabel="Diff" icon="pi pi-check" (onClick)="diff()"
+    [disabled]="!this.selectedContents || (this.selectedContents && this.selectedContents.length != 2)"></p-button>
+  </div>
+</p-panel>
+<div *ngIf="showDiffPanel">
+  <p-divider></p-divider>
+  <p-panel [toggleable]="true" [transitionOptions]="'1ms'">
+      <p>diff content here !</p>
+  </p-panel>
+</div>

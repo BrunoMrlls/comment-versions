@@ -23,6 +23,13 @@ import localept from '@angular/common/locales/pt';
 import {CommentPopupComponent} from './comment-popup/comment-popup.component';
 import {SanitizeHtmlPipe} from './pipes/sanitize/sanitize-html.pipe';
 import {RippleModule} from "primeng/ripple";
+import {
+  DragAndDropTextEditorHistoryComponent
+} from './versioning/drag-and-drop-text-editor-history/drag-and-drop-text-editor-history.component';
+import {DragDropModule} from "primeng/dragdrop";
+import {TableModule} from "primeng/table";
+import {DialogService, DynamicDialogModule} from "primeng/dynamicdialog";
+import {DividerModule} from "primeng/divider";
 
 registerLocaleData(localept, 'pt');
 
@@ -33,27 +40,38 @@ registerLocaleData(localept, 'pt');
     TimelineCommentsComponent,
     CommentPopupComponent,
     SanitizeHtmlPipe,
+    DragAndDropTextEditorHistoryComponent,
   ],
-    imports: [
-        CommonModule,
-        BrowserModule,
-        FormsModule,
-        ReactiveFormsModule,
-        AppRoutingModule,
-        PanelModule,
-        BrowserAnimationsModule,
-        NgxEditorModule,
-        DialogModule,
-        ButtonModule,
-        InplaceModule,
-        InputTextareaModule,
-        InputTextModule,
-        ScrollPanelModule,
-        TimelineModule,
-        CardModule,
-        RippleModule,
-    ],
-  providers: [{ provide: LOCALE_ID, useValue: 'pt' }],
+  imports: [
+    CommonModule,
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    PanelModule,
+    BrowserAnimationsModule,
+    NgxEditorModule,
+    DialogModule,
+    ButtonModule,
+    InplaceModule,
+    InputTextareaModule,
+    InputTextModule,
+    ScrollPanelModule,
+    TimelineModule,
+    CardModule,
+    RippleModule,
+    DragDropModule,
+    TableModule,
+    DynamicDialogModule,
+    DividerModule
+  ],
+  entryComponents: [
+    DragAndDropTextEditorHistoryComponent
+  ],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'pt' }
+    , DialogService
+  ],
   bootstrap: [
     AppComponent
   ],

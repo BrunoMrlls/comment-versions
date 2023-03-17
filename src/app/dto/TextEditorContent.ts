@@ -1,10 +1,12 @@
 
 export default class TextEditorContent {
 
-  constructor(public fullContent: string
-              , public rawContent: string
+  constructor(
+              public version: number
+              , public fullContent: string
+              , public _rawContent: string
+              , public user: string
               , public date: Date) {
   }
-
 
 }

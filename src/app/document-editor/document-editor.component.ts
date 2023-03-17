@@ -9,6 +9,11 @@ import {EditorView} from "prosemirror-view";
 import {CommentsService} from "../service/comments.service";
 import {EditorService} from "../service/editor.service";
 import TextEditorContent from "../dto/TextEditorContent";
+import {NamesUtils} from "../utils/NamesUtils";
+import {DialogService} from "primeng/dynamicdialog";
+import {
+  DragAndDropTextEditorHistoryComponent
+} from "../versioning/drag-and-drop-text-editor-history/drag-and-drop-text-editor-history.component";
 
 @Component({
   selector: 'app-document-editor',
@@ -31,6 +36,7 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
     private primengConfig: PrimeNGConfig
     , private commentService: CommentsService
     , private editorService: EditorService
+    , private dialogService: DialogService
 
   ) {
     this.editor = new Editor();
@@ -80,15 +86,23 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
 
   editorChange() {
     const contentAsHtml = this.form.get('editorContent')?.value;
-    console.log('contentAsHtml', contentAsHtml)
     if (contentAsHtml) {
       const rawText = contentAsHtml.replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, ''); //is trusted ?
-      console.log(rawText);
-      const tec = new TextEditorContent(contentAsHtml, rawText, new Date)
+
+      const names = NamesUtils.NAMES;
+      const user = names[Math.floor(Math.random() * names.length)];
+
+      const tec = new TextEditorContent(0, contentAsHtml, rawText, user, new Date)
       this.editorService.saveEditorContent(tec);
     }
   }
 
   showContentHistory() {
+    this.dialogService.open(
+      DragAndDropTextEditorHistoryComponent,
+      {
+        width: '80%'
+      }
+    )
   }
 }

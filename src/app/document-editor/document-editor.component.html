@@ -5,7 +5,7 @@
         <div class="text-right mb-1">
           <a href="javascript:void(0);" (click)="showContentHistory()">View content history</a>
         </div>
-        <form [formGroup]="form" class="NgxEditor__Wrapper" (ngSubmit)="editorChange()">
+        <form [formGroup]="form" class="NgxEditor__Wrapper">
           <div class="editor">
             <ngx-editor-menu [editor]="this.editor" [toolbar]="toolbar" [customMenuRef]="commentMenu"></ngx-editor-menu>
             <ngx-editor [editor]="this.editor" formControlName="editorContent"></ngx-editor>
@@ -16,8 +16,10 @@
               <app-comment-popup [class]="iconCommentMenuClass" [editor]="this.editor" (onCommentClick)="onCommentDone($event)"></app-comment-popup>
             </ng-template>
           </div>
-          <p-button type="submit" ariaLabel="Reply" icon="pi pi-check"></p-button>
         </form>
+        <div class="text-right mt-3">
+        <p-button type="button" ariaLabel="Reply" icon="pi pi-check" (onClick)="editorChange()"></p-button>
+        </div>
       </p-panel>
       <hr>
       <p-panel header="Output">
