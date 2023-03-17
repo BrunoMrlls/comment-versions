@@ -6,23 +6,23 @@
   </svg>
 </div>
 
-  <div *ngIf="showPopup" class="NgxEditor__Popup">
-    <form class="NgxEditor__Popup--Form" [formGroup]="form" (ngSubmit)="insertComment($event)">
-        <div class="NgxEditor__Popup--FormGroup">
-          <div class="NgxEditor__Popup--Col">
-            <label class="NgxEditor__Popup--Label">{{getLabel()}}</label>
+<div *ngIf="showPopup" class="NgxEditor__Popup">
+  <form class="NgxEditor__Popup--Form" [formGroup]="form" (ngSubmit)="insertComment($event)">
+      <div class="NgxEditor__Popup--FormGroup">
+        <div class="NgxEditor__Popup--Col">
+          <label class="NgxEditor__Popup--Label">{{getLabel()}}</label>
 
-            <input type="text" formControlName="content" autofocus autocomplete="off" />
-            <div *ngIf="content.touched && content.invalid" class="NgxEditor__HelpText NgxEditor__HelpText--Error">
-              {{ content.errors?.['required'] && 'This is required' }}
-            </div>
-
+          <input type="text" formControlName="content" autofocus autocomplete="off" />
+          <div *ngIf="content.touched && content.invalid" class="NgxEditor__HelpText NgxEditor__HelpText--Error">
+            {{ content.errors?.['required'] && 'This is required' }}
           </div>
+
         </div>
-      <button class="mr-3" type="submit" [disabled]="!form.valid">{{getLabel()}}</button>
-      <button type="button" (click)="showPopup = false">Cancel</button>
-    </form>
+      </div>
+    <button class="mr-3" type="submit" [disabled]="!form.valid">{{getLabel()}}</button>
+    <button type="button" (click)="showPopup = false">Cancel</button>
+  </form>
 <!--    <pre>-->
 <!--      {{this.findInvalidControls() | json}}-->
 <!--    </pre>-->
-  </div>
+</div>

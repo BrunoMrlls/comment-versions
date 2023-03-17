@@ -5,7 +5,7 @@ import {MaskUtils} from "../utils/MaskUtils";
 @Injectable({
   providedIn: 'root'
 })
-export class CommentsServiceService {
+export class CommentsService {
 
   constructor() { }
 

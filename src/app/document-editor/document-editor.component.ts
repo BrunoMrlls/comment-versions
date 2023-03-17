@@ -4,10 +4,11 @@ import {Editor, Toolbar} from 'ngx-editor';
 import {Comment} from "../dto/Comment";
 import {PrimeNGConfig} from "primeng/api";
 import {EditorUtils} from "../utils/EditorUtils";
-import {Plugin, PluginKey, TextSelection} from "prosemirror-state";
+import {Plugin, PluginKey} from "prosemirror-state";
 import {EditorView} from "prosemirror-view";
-import {CommentsServiceService} from "../service/comments-service.service";
-import {EditorServiceService} from "../service/editor-service.service";
+import {CommentsService} from "../service/comments.service";
+import {EditorService} from "../service/editor.service";
+import TextEditorContent from "../dto/TextEditorContent";
 
 @Component({
   selector: 'app-document-editor',
@@ -19,7 +20,7 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
   form = new FormGroup({
     editorContent: new FormControl('')
   });
-  toolbar : Toolbar = EditorUtils.TOOLBAR_ACTIONS;
+  toolbar : Toolbar = EditorUtils.CONTEXT_TOOLBAR_ACTIONS;
   contextCustomToolbar : Toolbar = EditorUtils.CONTEXT_TOOLBAR_ACTIONS;
 
   iconCommentMenuClass = EditorUtils.ICON_COMMENT_CLASS;
@@ -28,8 +29,8 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
 
   constructor(
     private primengConfig: PrimeNGConfig
-    , private commentService: CommentsServiceService
-    , private editorService: EditorServiceService
+    , private commentService: CommentsService
+    , private editorService: EditorService
 
   ) {
     this.editor = new Editor();
@@ -63,7 +64,7 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.primengConfig.ripple = true;
-    this.form.get('editorContent')?.setValue(this.editorService.getEditorContent())
+    this.form.get('editorContent')?.setValue(this.editorService.getEditorContent().fullContent)
   }
 
   ngOnDestroy(): void {
@@ -74,13 +75,20 @@ export class DocumentEditorComponent implements OnInit, OnDestroy {
     //todo before save, verify if is there something already indexed ?
     //because can there be comments above or below of each other.
     this.commentService.addComment(c)
-    const index = this.selectedComment.from ? this.selectedComment.from : 0;
-    // this.comments = this.commentService.findCommentByIndex(index);
     this.comments = [... this.comments, c];
   }
 
-  editorChange(e: string) {
-    this.editorService.saveEditorContent(e);
+  editorChange() {
+    const contentAsHtml = this.form.get('editorContent')?.value;
+    console.log('contentAsHtml', contentAsHtml)
+    if (contentAsHtml) {
+      const rawText = contentAsHtml.replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, ''); //is trusted ?
+      console.log(rawText);
+      const tec = new TextEditorContent(contentAsHtml, rawText, new Date)
+      this.editorService.saveEditorContent(tec);
+    }
   }
 
+  showContentHistory() {
+  }
 }

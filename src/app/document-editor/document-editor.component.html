@@ -2,10 +2,13 @@
   <div class="row">
     <div class="col-8">
       <p-panel header="Text editor">
-        <form [formGroup]="form" class="NgxEditor__Wrapper">
+        <div class="text-right mb-1">
+          <a href="javascript:void(0);" (click)="showContentHistory()">View content history</a>
+        </div>
+        <form [formGroup]="form" class="NgxEditor__Wrapper" (ngSubmit)="editorChange()">
           <div class="editor">
             <ngx-editor-menu [editor]="this.editor" [toolbar]="toolbar" [customMenuRef]="commentMenu"></ngx-editor-menu>
-            <ngx-editor [editor]="this.editor" formControlName="editorContent" (ngModelChange)="editorChange($event)"></ngx-editor>
+            <ngx-editor [editor]="this.editor" formControlName="editorContent"></ngx-editor>
             <ngx-editor-floating-menu [editor]="this.editor" >
               <ngx-editor-menu [editor]="this.editor" [toolbar]="contextCustomToolbar" [customMenuRef]="commentMenu"></ngx-editor-menu>
             </ngx-editor-floating-menu>
@@ -13,6 +16,7 @@
               <app-comment-popup [class]="iconCommentMenuClass" [editor]="this.editor" (onCommentClick)="onCommentDone($event)"></app-comment-popup>
             </ng-template>
           </div>
+          <p-button type="submit" ariaLabel="Reply" icon="pi pi-check"></p-button>
         </form>
       </p-panel>
       <hr>

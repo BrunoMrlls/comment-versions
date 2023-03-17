@@ -16,8 +16,7 @@ export class EditorUtils {
   ];
   static CONTEXT_TOOLBAR_ACTIONS : Toolbar = [
     ['bold', 'italic'],
-    ['underline', 'strike'],
-    ['link', 'image'],
+    ['underline'],
   ];
   static ICON_COMMENT_CLASS = [
     'NgxEditor__MenuItem'
