@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EditorService} from "../../service/editor.service";
 import TextEditorContent from "../../dto/TextEditorContent";
+import {DiffEditorModel} from "ngx-monaco-editor";
 
 @Component({
   selector: 'app-drag-and-drop-text-editor-history',
@@ -16,6 +17,22 @@ export class DragAndDropTextEditorHistoryComponent implements OnInit {
 
   Math = Math;
   showDiffPanel = false;
+
+
+  editorOptions = {theme: 'vs-dark', language: 'javascript'};
+  code: string= 'function x() {\nconsole.log("Hello world!");\n}';
+  options = {
+    theme: 'vs'
+  };
+  originalModel: DiffEditorModel = {
+    code: 'heLLo world!',
+    language: 'text/plain'
+  };
+
+  modifiedModel: DiffEditorModel = {
+    code: 'hello orlando!',
+    language: 'text/plain'
+  };
 
   constructor(
     private editorService: EditorService
@@ -66,6 +83,21 @@ export class DragAndDropTextEditorHistoryComponent implements OnInit {
 
   diff() {
     this.showDiffPanel = true;
+
+    const left = this.selectedContents[0]._rawContent;
+    const right = this.selectedContents[1]._rawContent;
+
+    this.originalModel = {
+      code: left,
+      language: 'text/plain'
+    };
+    this.modifiedModel = {
+      code: right,
+      language: 'text/plain'
+    };
+
+    console.log(this.originalModel.code)
+    console.log(this.modifiedModel.code)
   }
 
 

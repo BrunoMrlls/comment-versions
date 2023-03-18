@@ -30,6 +30,7 @@ import {DragDropModule} from "primeng/dragdrop";
 import {TableModule} from "primeng/table";
 import {DialogService, DynamicDialogModule} from "primeng/dynamicdialog";
 import {DividerModule} from "primeng/divider";
+import {MonacoEditorModule} from "ngx-monaco-editor";
 
 registerLocaleData(localept, 'pt');
 
@@ -63,7 +64,8 @@ registerLocaleData(localept, 'pt');
     DragDropModule,
     TableModule,
     DynamicDialogModule,
-    DividerModule
+    DividerModule,
+    MonacoEditorModule.forRoot() // use forRoot() in main app module only.
   ],
   entryComponents: [
     DragAndDropTextEditorHistoryComponent

@@ -50,7 +50,7 @@
 </p-panel>
 <div *ngIf="showDiffPanel">
   <p-divider></p-divider>
-  <p-panel [toggleable]="true" [transitionOptions]="'1ms'">
-      <p>diff content here !</p>
+  <p-panel [toggleable]="true" [transitionOptions]="'1ms'" header="Diff content here">
+    <ngx-monaco-diff-editor [options]="options" [originalModel]="originalModel" [modifiedModel]="modifiedModel"></ngx-monaco-diff-editor>
   </p-panel>
 </div>
