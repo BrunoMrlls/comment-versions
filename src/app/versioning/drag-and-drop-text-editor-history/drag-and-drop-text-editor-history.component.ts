@@ -22,7 +22,8 @@ export class DragAndDropTextEditorHistoryComponent implements OnInit {
   editorOptions = {theme: 'vs-dark', language: 'javascript'};
   code: string= 'function x() {\nconsole.log("Hello world!");\n}';
   options = {
-    theme: 'vs'
+    theme: 'vs',
+    wordWrap: true,
   };
   originalModel: DiffEditorModel = {
     code: 'heLLo world!',
